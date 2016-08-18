@@ -1,0 +1,27 @@
+sudo: required
+language: bash
+services:
+  - docker
+env:
+  DOCKER_COMPOSE_VERSION: 1.6.2
+before_install:
+  - sudo apt-get update
+  - sudo apt-get -o Dpkg::Options::="--force-confnew" -y install docker-engine
+install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+before_script:
+  - docker -v
+  - docker-compose -v
+  - docker-compose build processor-skip-lines
+script: docker-compose run --rm --entrypoint sh -e KBC_PARAMETER_LINES=2 -e KBC_DATA_DIR=/code/Tests/data processor-skip-lines /code/Tests/run.sh
+after_success:
+  - docker images
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: ./deploy.sh
+  on:
+    tags: true  

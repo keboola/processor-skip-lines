@@ -1,0 +1,10 @@
+version: '2'
+services:
+  processor-skip-lines:
+    build: .
+    image: keboola/processor-skip-lines
+    tty: true
+    stdin_open: true
+    command: sh
+    volumes:
+      - ./:/code

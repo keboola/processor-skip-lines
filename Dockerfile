@@ -1,3 +1,8 @@
 FROM alpine:latest
 
-CMD run.sh
+COPY . /code
+
+WORKDIR /code
+
+CMD /code/run.sh
+

@@ -5,8 +5,8 @@ services:
 before_script:
   - docker -v
   - docker-compose -v
-  - docker-compose build processor-skip-lines
-script: docker-compose run --rm --entrypoint sh -e KBC_PARAMETER_LINES=2 -e KBC_DATADIR=/code/Tests/data processor-skip-lines /code/Tests/run.sh
+  - docker-compose build
+script: docker-compose run --rm tests
 after_success:
   - docker images
 deploy:

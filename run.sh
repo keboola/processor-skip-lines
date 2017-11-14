@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 cd $KBC_DATADIR/in/files/
 # create folders

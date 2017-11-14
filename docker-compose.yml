@@ -5,6 +5,12 @@ services:
     image: keboola/processor-skip-lines
     tty: true
     stdin_open: true
-    command: sh
+    command: sh /code/run.sh
+  tests:
+    image: keboola/processor-skip-lines
+    tty: true
+    stdin_open: true
+    command: sh /code/tests/run.sh
     volumes:
       - ./:/code
+

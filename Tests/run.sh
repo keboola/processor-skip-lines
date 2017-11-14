@@ -1,9 +1,12 @@
 #!/bin/sh
 set -e
 
-rm -rf /code/tests/data/out/files/*
+rm -rf /tmp/tests
+mkdir /tmp/tests
+cp -r /code/tests/data /tmp/tests
 
 echo "Running tests"
+export KBC_DATADIR=/tmp/tests/data
 export KBC_PARAMETER_LINES=2
 
 /code/run.sh

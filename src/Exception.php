@@ -1,3 +1,6 @@
 <?php
 namespace Keboola\Processor\SkipLines;
-class Exception extends \Exception {};
+
+class Exception extends \Exception
+{
+}

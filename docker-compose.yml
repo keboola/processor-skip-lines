@@ -1,16 +1,10 @@
 version: '2'
 services:
-  processor-skip-lines:
+  dev:
     build: .
     image: keboola/processor-skip-lines
     tty: true
     stdin_open: true
-    command: php /code/main.php
-  tests:
-    image: keboola/processor-skip-lines
-    tty: true
-    stdin_open: true
-    command: php /code/tests/run.php
     volumes:
       - ./:/code
 

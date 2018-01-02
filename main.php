@@ -48,11 +48,11 @@ try {
                 $fs->mkdir($slicedDestination);
             }
             foreach ($slicedFiles as $slicedFile) {
-                $copyCommand = "tail -n +" . ($parameters["lines"] + 1) . " " . $slicedFile->getPathName() . " > " . $slicedDestination . "/" . $slicedFile->getBasename();
+                $copyCommand = "tail -n +" . ($parameters["lines"] + 1) . " " . $slicedFile->getPathname() . " > " . $slicedDestination . "/" . $slicedFile->getBasename();
                 (new \Symfony\Component\Process\Process($copyCommand))->mustRun();
             }
         } else {
-            $copyCommand = "tail -n +" . ($parameters["lines"] + 1) . " " . $sourceTable->getPathName() . " > " . $outputPath . "/" . $sourceTable->getBasename();
+            $copyCommand = "tail -n +" . ($parameters["lines"] + 1) . " " . $sourceTable->getPathname() . " > " . $outputPath . "/" . $sourceTable->getBasename();
             (new \Symfony\Component\Process\Process($copyCommand))->mustRun();
         }
     }
@@ -62,7 +62,7 @@ try {
     $finder->name("*.manifest")->in($dataFolder . "/in/tables")->depth(0);
     $outputPath = $dataFolder . "/out/tables";
     foreach ($finder as $sourceTableManifest) {
-        $copyCommand = "mv " . $sourceTableManifest->getPathName() . " " . $outputPath . "/" . $sourceTableManifest->getBasename();
+        $copyCommand = "mv " . $sourceTableManifest->getPathname() . " " . $outputPath . "/" . $sourceTableManifest->getBasename();
         (new \Symfony\Component\Process\Process($copyCommand))->mustRun();
     }
 
@@ -71,7 +71,7 @@ try {
     $finder->notName("*.manifest")->in($dataFolder . "/in/files")->depth(0);
     $outputPath = $dataFolder . "/out/files";
     foreach ($finder as $sourceFile) {
-        $copyCommand = "tail -n +" . ($parameters["lines"] + 1) . " " . $sourceFile->getPathName() . " > " . $outputPath . "/" . $sourceFile->getBasename();
+        $copyCommand = "tail -n +" . ($parameters["lines"] + 1) . " " . $sourceFile->getPathname() . " > " . $outputPath . "/" . $sourceFile->getBasename();
         (new \Symfony\Component\Process\Process($copyCommand))->mustRun();
     }
 
@@ -80,7 +80,7 @@ try {
     $finder->name("*.manifest")->in($dataFolder . "/in/files")->depth(0);
     $outputPath = $dataFolder . "/out/files";
     foreach ($finder as $sourceFileManifest) {
-        $copyCommand = "mv " . $sourceFileManifest->getPathName() . " " . $outputPath . "/" . $sourceFileManifest->getBasename();
+        $copyCommand = "mv " . $sourceFileManifest->getPathname() . " " . $outputPath . "/" . $sourceFileManifest->getBasename();
         (new \Symfony\Component\Process\Process($copyCommand))->mustRun();
     }
 } catch (\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException $e) {

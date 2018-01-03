@@ -38,50 +38,30 @@ try {
     // process tables and sliced tables
     $finder = new \Symfony\Component\Finder\Finder();
     $finder->notName("*.manifest")->in($dataFolder . "/in/tables")->depth(0);
-    $outputPath = $dataFolder . "/out/tables";
     foreach ($finder as $sourceTable) {
-        if (is_dir($sourceTable->getPathname())) {
-            $fs = new \Symfony\Component\Filesystem\Filesystem();
-            $slicedFiles = new FilesystemIterator($sourceTable->getPathname(), FilesystemIterator::SKIP_DOTS);
-            $slicedDestination = $outputPath . '/' . $sourceTable->getFilename() . '/';
-            if (!$fs->exists($slicedDestination)) {
-                $fs->mkdir($slicedDestination);
-            }
-            foreach ($slicedFiles as $slicedFile) {
-                $copyCommand = "tail -n +" . ($parameters["lines"] + 1) . " " . $slicedFile->getPathname() . " > " . $slicedDestination . "/" . $slicedFile->getBasename();
-                (new \Symfony\Component\Process\Process($copyCommand))->mustRun();
-            }
-        } else {
-            $copyCommand = "tail -n +" . ($parameters["lines"] + 1) . " " . $sourceTable->getPathname() . " > " . $outputPath . "/" . $sourceTable->getBasename();
-            (new \Symfony\Component\Process\Process($copyCommand))->mustRun();
-        }
+        \Keboola\Processor\SkipLines\processFile($sourceTable, $dataFolder . "/out/tables", $parameters);
     }
 
     // move table manifests
     $finder = new \Symfony\Component\Finder\Finder();
     $finder->name("*.manifest")->in($dataFolder . "/in/tables")->depth(0);
-    $outputPath = $dataFolder . "/out/tables";
     foreach ($finder as $sourceTableManifest) {
-        $copyCommand = "mv " . $sourceTableManifest->getPathname() . " " . $outputPath . "/" . $sourceTableManifest->getBasename();
-        (new \Symfony\Component\Process\Process($copyCommand))->mustRun();
+        \Keboola\Processor\SkipLines\processManifest($sourceTableManifest, $dataFolder . "/out/tables");
     }
 
-    // process files
+    // process files and sliced files
     $finder = new \Symfony\Component\Finder\Finder();
     $finder->notName("*.manifest")->in($dataFolder . "/in/files")->depth(0);
     $outputPath = $dataFolder . "/out/files";
     foreach ($finder as $sourceFile) {
-        $copyCommand = "tail -n +" . ($parameters["lines"] + 1) . " " . $sourceFile->getPathname() . " > " . $outputPath . "/" . $sourceFile->getBasename();
-        (new \Symfony\Component\Process\Process($copyCommand))->mustRun();
+        \Keboola\Processor\SkipLines\processFile($sourceFile, $outputPath, $parameters);
     }
 
     // move file manifests
     $finder = new \Symfony\Component\Finder\Finder();
     $finder->name("*.manifest")->in($dataFolder . "/in/files")->depth(0);
-    $outputPath = $dataFolder . "/out/files";
     foreach ($finder as $sourceFileManifest) {
-        $copyCommand = "mv " . $sourceFileManifest->getPathname() . " " . $outputPath . "/" . $sourceFileManifest->getBasename();
-        (new \Symfony\Component\Process\Process($copyCommand))->mustRun();
+        \Keboola\Processor\SkipLines\processManifest($sourceFileManifest, $dataFolder . "/out/files");
     }
 } catch (\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException $e) {
     echo "Invalid configuration: " . $e->getMessage();

@@ -19,6 +19,7 @@
     "autoload": {
         "psr-4": {
             "Keboola\\Processor\\SkipLines\\": "src/"
-        }
+        },
+        "files": ["src/processFile.php", "src/processManifest.php"]
     }
 }

@@ -35,7 +35,8 @@ Clone this repository and init the workspace with following commands:
         "component": "keboola.processor-skip-lines"
     },
     "parameters": {
-        "lines": 1
+        "lines": 1,
+        "direction_from": "top"
     }
 }
 ```
@@ -45,3 +46,7 @@ Clone this repository and init the workspace with following commands:
 ### lines
 
 Number of lines to remove from each file.
+
+### direction_from
+
+Direction to skip lines from. Possible values are `top` or `bottom`. The default value is `top`

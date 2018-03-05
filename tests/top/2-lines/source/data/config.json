@@ -1,5 +1,6 @@
 {
   "parameters": {
-    "lines": 2
+    "lines": 2,
+    "direction_from": "top"
   }
 }

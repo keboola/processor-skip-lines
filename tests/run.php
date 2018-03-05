@@ -4,7 +4,7 @@ require_once(__DIR__ . "/../vendor/autoload.php");
 $testFolder = __DIR__;
 
 $finder = new \Symfony\Component\Finder\Finder();
-$finder->directories()->sortByName()->in($testFolder)->depth(0);
+$finder->directories()->sortByName()->in([$testFolder . '/top', $testFolder . '/bottom'])->depth(0);
 $fs = new \Symfony\Component\Filesystem\Filesystem();
 
 foreach ($finder as $testSuite) {

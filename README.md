@@ -15,7 +15,7 @@ Clone this repository and init the workspace with following commands:
 ### TDD 
 
  - Edit the code
- - Run `docker-compose run --rm tests` 
+ - Run `docker-compose run --rm dev php ./test/run.php` 
  - Repeat
  
 # Integration

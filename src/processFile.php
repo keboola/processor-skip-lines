@@ -19,11 +19,21 @@ function processFile(\SplFileInfo $sourceFile, $destinationFolder, array $parame
             $fs->mkdir($slicedDestination);
         }
         foreach ($slicedFiles as $slicedFile) {
-            $copyCommand = "tail -n +" . ($parameters["lines"] + 1) . " " . $slicedFile->getPathname() . " > " . $slicedDestination . "/" . $slicedFile->getBasename();
+            if ($parameters['direction_from'] === 'bottom') {
+                $copyCommand = "head -n -" . $parameters["lines"] . " " . $slicedFile->getPathname() . " > " . $slicedDestination . "/" . $slicedFile->getBasename();
+            } else {
+                $copyCommand = "tail -n +" . ($parameters["lines"] + 1) . " " . $slicedFile->getPathname() . " > " . $slicedDestination . "/" . $slicedFile->getBasename();
+            }
+
             (new Process($copyCommand))->mustRun();
         }
     } else {
-        $copyCommand = "tail -n +" . ($parameters["lines"] + 1) . " " . $sourceFile->getPathname() . " > " . $destinationFolder . "/" . $sourceFile->getBasename();
+        if ($parameters['direction_from'] === 'bottom') {
+            $copyCommand = "head -n -" . $parameters["lines"] . " " . $sourceFile->getPathname() . " > " . $destinationFolder . "/" . $sourceFile->getBasename();
+        } else {
+            $copyCommand = "tail -n +" . ($parameters["lines"] + 1) . " " . $sourceFile->getPathname() . " > " . $destinationFolder . "/" . $sourceFile->getBasename();
+        }
+
         (new Process($copyCommand))->mustRun();
     }
 }

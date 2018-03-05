@@ -17,6 +17,10 @@ class ConfigDefinition implements ConfigurationInterface
                 ->integerNode("lines")
                     ->min(1)
                 ->end()
+                ->enumNode('direction_from')
+                    ->values(['top', 'bottom'])
+                    ->defaultValue('top')
+                ->end()
             ->end()
         ;
         return $treeBuilder;

@@ -1,7 +1,9 @@
 <?php
+
 namespace Keboola\Processor\SkipLines;
 
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
 
 /**
@@ -13,7 +15,8 @@ function processFile(\SplFileInfo $sourceFile, $destinationFolder, array $parame
 {
     if (is_dir($sourceFile->getPathname())) {
         $fs = new Filesystem();
-        $slicedFiles = new \FilesystemIterator($sourceFile->getPathname(), \FilesystemIterator::SKIP_DOTS);
+        $slicedFiles = new Finder();
+        $slicedFiles->files()->in($sourceFile->getPathname());
         $slicedDestination = $destinationFolder . '/' . $sourceFile->getFilename() . '/';
         if (!$fs->exists($slicedDestination)) {
             $fs->mkdir($slicedDestination);

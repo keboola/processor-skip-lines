@@ -21,20 +21,31 @@ function processFile(\SplFileInfo $sourceFile, $destinationFolder, array $parame
         foreach ($slicedFiles as $slicedFile) {
             $fs->mkdir($slicedDestination . $slicedFile->getRelativePath());
             if ($parameters['direction_from'] === 'bottom') {
-                $copyCommand = "head -n -" . $parameters["lines"] . " " . escapeshellarg($slicedFile->getPathname()) . " > " . escapeshellarg($slicedDestination . $slicedFile->getRelativePathname());
+                $copyCommand = "head -n -" . $parameters["lines"] . " " .
+                    escapeshellarg($slicedFile->getPathname()) . " > " .
+                    escapeshellarg($slicedDestination . $slicedFile->getRelativePathname());
             } else {
-                $copyCommand = "tail -n +" . ($parameters["lines"] + 1) . " " . escapeshellarg($slicedFile->getPathname()) . " > " . escapeshellarg($slicedDestination . $slicedFile->getRelativePathname());
+                $copyCommand = "tail -n +" . ($parameters["lines"] + 1) . " " .
+                    escapeshellarg($slicedFile->getPathname()) . " > " .
+                    escapeshellarg($slicedDestination . $slicedFile->getRelativePathname());
             }
-
-            (new Process($copyCommand))->mustRun();
+            $process = new Process($copyCommand);
+            $process->setTimeout(null);
+            $process->mustRun();
         }
     } else {
         if ($parameters['direction_from'] === 'bottom') {
-            $copyCommand = "head -n -" . $parameters["lines"] . " " . escapeshellarg($sourceFile->getPathname()) . " > " . escapeshellarg($destinationFolder . "/" . $sourceFile->getBasename());
+            $copyCommand = "head -n -" . $parameters["lines"] . " " .
+                escapeshellarg($sourceFile->getPathname()) . " > " .
+                escapeshellarg($destinationFolder . "/" . $sourceFile->getBasename());
         } else {
-            $copyCommand = "tail -n +" . ($parameters["lines"] + 1) . " " . escapeshellarg($sourceFile->getPathname()) . " > " . escapeshellarg($destinationFolder . "/" . $sourceFile->getBasename());
+            $copyCommand = "tail -n +" . ($parameters["lines"] + 1) . " " .
+                escapeshellarg($sourceFile->getPathname()) . " > " .
+                escapeshellarg($destinationFolder . "/" . $sourceFile->getBasename());
         }
 
-        (new Process($copyCommand))->mustRun();
+        $process = new Process($copyCommand);
+        $process->setTimeout(null);
+        $process->mustRun();
     }
 }

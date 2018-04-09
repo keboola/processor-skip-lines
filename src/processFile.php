@@ -1,17 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Keboola\Processor\SkipLines;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
 
-/**
- * @param \SplFileInfo $sourceFile
- * @param $destinationFolder
- * @param array $parameters
- */
-function processFile(\SplFileInfo $sourceFile, $destinationFolder, array $parameters)
+function processFile(\SplFileInfo $sourceFile, string $destinationFolder, array $parameters) : void
 {
     if (is_dir($sourceFile->getPathname())) {
         $fs = new Filesystem();

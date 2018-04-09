@@ -1,6 +1,9 @@
 <?php
+
+declare(strict_types=1);
+
 // Catch all warnings and notices
-set_error_handler(function ($errno, $errstr, $errfile, $errline, array $errcontext) {
+set_error_handler(function (int $errno, string $errstr, string $errfile, int $errline, array $errcontext) : void {
     throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
 });
 require __DIR__ . "/vendor/autoload.php";

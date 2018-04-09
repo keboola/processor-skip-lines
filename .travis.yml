@@ -1,17 +1,16 @@
 sudo: required
+
 language: bash
+
 services:
   - docker
+
 before_script:
+  - export APP_IMAGE=keboola-component
   - docker -v
-  - docker-compose -v
-  - docker-compose build
-  - docker-compose run --rm dev composer install
-  - docker-compose run --rm dev ./vendor/bin/phpcs --standard=psr2 --ignore=vendor -n .
-  - docker-compose run --rm dev ./vendor/bin/phpstan analyse --level=7 ./src ./tests ./main.php
-script: docker-compose run --rm dev php ./tests/run.php
-after_success:
-  - docker images
+  - docker build -t $APP_IMAGE .
+  - docker run $APP_IMAGE composer ci
+
 deploy:
   provider: script
   skip_cleanup: true

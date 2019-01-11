@@ -21,7 +21,7 @@ foreach ($finder as $testSuite) {
     $fs->mkdir($temp->getTmpFolder() . "/out/tables", 0777);
     $fs->mkdir($temp->getTmpFolder() . "/out/files", 0777);
 
-    $runCommand = "export KBC_DATADIR=\"{$temp->getTmpFolder()}\" && php /code/main.php --data=" .
+    $runCommand = "export KBC_DATADIR=\"{$temp->getTmpFolder()}\" && php /code/src/run.php --data=" .
         $temp->getTmpFolder();
     $runProcess = \Symfony\Component\Process\Process::fromShellCommandline($runCommand);
     $runProcess->run();

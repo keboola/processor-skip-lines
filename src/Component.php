@@ -72,33 +72,36 @@ class Component extends BaseComponent
             $slicedDestination = $destinationFolder . '/' . $sourceFile->getFilename() . '/';
             foreach ($slicedFiles as $slicedFile) {
                 $fs->mkdir($slicedDestination . $slicedFile->getRelativePath());
-                if ($config->getDirectionFrom() === 'bottom') {
-                    $copyCommand = "head -n -" . $config->getLines() . " " .
-                        escapeshellarg($slicedFile->getPathname()) . " > " .
-                        escapeshellarg($slicedDestination . $slicedFile->getRelativePathname());
-                } else {
-                    $copyCommand = "tail -n +" . ($config->getLines() + 1) . " " .
-                        escapeshellarg($slicedFile->getPathname()) . " > " .
-                        escapeshellarg($slicedDestination . $slicedFile->getRelativePathname());
-                }
-                $process = Process::fromShellCommandline($copyCommand);
-                $process->setTimeout(null);
-                $process->mustRun();
+                $this->skipLinesInFile(
+                    $slicedFile->getPathname(),
+                    $slicedDestination . $slicedFile->getRelativePathname(),
+                    $config->getDirectionFrom(),
+                    $config->getLines()
+                );
             }
         } else {
-            if ($config->getDirectionFrom() === 'bottom') {
-                $copyCommand = "head -n -" . $config->getLines() . " " .
-                    escapeshellarg($sourceFile->getPathname()) . " > " .
-                    escapeshellarg($destinationFolder . "/" . $sourceFile->getBasename());
-            } else {
-                $copyCommand = "tail -n +" . ($config->getLines() + 1) . " " .
-                    escapeshellarg($sourceFile->getPathname()) . " > " .
-                    escapeshellarg($destinationFolder . "/" . $sourceFile->getBasename());
-            }
-
-            $process = Process::fromShellCommandline($copyCommand);
-            $process->setTimeout(null);
-            $process->mustRun();
+            $this->skipLinesInFile(
+                $sourceFile->getPathname(),
+                $destinationFolder . "/" . $sourceFile->getBasename(),
+                $config->getDirectionFrom(),
+                $config->getLines()
+            );
         }
+    }
+
+    private function skipLinesInFile(string $sourcePath, string $destinationPath, string $direction, int $lines): void
+    {
+        if ($direction === 'bottom') {
+            $copyCommand = "head -n -" . $lines . " " .
+                escapeshellarg($sourcePath) . " > " .
+                escapeshellarg($destinationPath);
+        } else {
+            $copyCommand = "tail -n +" . ($lines + 1) . " " .
+                escapeshellarg($sourcePath) . " > " .
+                escapeshellarg($destinationPath);
+        }
+        $process = Process::fromShellCommandline($copyCommand);
+        $process->setTimeout(null);
+        $process->mustRun();
     }
 }

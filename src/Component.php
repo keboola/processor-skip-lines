@@ -92,11 +92,11 @@ class Component extends BaseComponent
     private function skipLinesInFile(string $sourcePath, string $destinationPath, string $direction, int $lines): void
     {
         if ($direction === 'bottom') {
-            $copyCommand = "head -n -" . $lines . " " .
+            $copyCommand = "busybox head -n -" . $lines . " " .
                 escapeshellarg($sourcePath) . " > " .
                 escapeshellarg($destinationPath);
         } else {
-            $copyCommand = "tail -n +" . ($lines + 1) . " " .
+            $copyCommand = "busybox tail -n +" . ($lines + 1) . " " .
                 escapeshellarg($sourcePath) . " > " .
                 escapeshellarg($destinationPath);
         }

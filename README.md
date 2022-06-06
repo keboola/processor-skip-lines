@@ -52,3 +52,7 @@ Clone this repository and init the workspace with following commands:
    - execute tests against new image
    - publish image to AWS ECR if the release is tagged
    
+
+## License
+
+MIT licensed, see [LICENSE](./LICENSE) file.

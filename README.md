@@ -1,7 +1,5 @@
 # processor-skip-lines
 
-[![Build Status](https://travis-ci.org/keboola/processor-skip-lines.svg?branch=master)](https://travis-ci.org/keboola/processor-skip-lines)
-
 Removes a given number of lines from each file in `/data/in/files` and `/data/in/tables` (including sliced tables). Copies manifest files.
 
 This processor uses Linux `tail` and `head` commands, so it does not correctly interpret multiline CSV rows. 
